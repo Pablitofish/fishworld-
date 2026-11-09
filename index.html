@@ -2,6 +2,8 @@
 
 
 
+
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -10,7 +12,7 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
 <title>FishWorld</title>
 
@@ -18,39 +20,29 @@
 
 <style>
 
-*{box-sizing:border-box}
+body{margin:0;background:#071521;color:white;font-family:Arial}
 
-body{margin:0;background:#071b26;color:white;font-family:Arial,sans-serif}
+header{padding:20px;background:#102638;color:#42d6c4;font-size:26px;font-weight:bold}
 
-header{padding:19px;background:#103341;font-size:25px;font-weight:bold}
+main{padding:15px;max-width:700px;margin:auto}
 
-header span{color:#35d6b0}
+button{background:#42d6c4;color:#071521;border:0;border-radius:10px;padding:14px;font-weight:bold;font-size:16px}
 
-main{padding:16px}
+.publish{width:100%;margin:15px 0}
 
-h1{font-size:25px;margin-bottom:7px}
+#map{height:300px;border-radius:12px}
 
-p{color:#b5cbd3}
+.card{background:#102638;padding:15px;border-radius:12px;margin:12px 0}
 
-.filters{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:20px 0}
+input,select,textarea{display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0;background:#183247;color:white;border:1px solid #456;border-radius:8px}
 
-select{width:100%;padding:12px 5px;border-radius:10px;background:#174251;color:white;border:1px solid #416b78;font-size:13px}
+img{max-width:100%;border-radius:10px}
 
-#map{height:430px;border-radius:16px;overflow:hidden;border:1px solid #416b78}
+#form{display:none}
 
-h2{margin-top:25px}
+nav{position:fixed;bottom:0;background:#102638;width:100%;display:flex;justify-content:space-around;padding:12px 0}
 
-.catch{background:#123542;padding:15px;border-radius:12px;margin:10px 0}
-
-small{color:#35d6b0}
-
-nav{position:sticky;bottom:0;background:#103341;display:flex;justify-content:space-around;padding:17px 3px}
-
-nav a{color:white;text-decoration:none;font-size:12px}
-
-.leaflet-popup-content-wrapper{border-radius:12px}
-
-.leaflet-popup-content{color:#102b35;font-weight:bold}
+nav button{background:none;color:white;font-size:13px;padding:5px}
 
 </style>
 
@@ -58,81 +50,77 @@ nav a{color:white;text-decoration:none;font-size:12px}
 
 <body>
 
-<header>🐟 Fish<span>World</span></header>
+<header>🐟 FishWorld</header>
 
 <main>
 
-<h1>Discover catches worldwide</h1>
+<h2>🌍 World Catch Map</h2>
 
-<p>One world. One community. A passion for fishing.</p>
-
-<div class="filters">
-
-<select id="water">
-
-<option value="all">All waters</option>
-
-<option value="saltwater">Saltwater</option>
-
-<option value="freshwater">Freshwater</option>
-
-<option value="brackish">Brackish</option>
-
-</select>
-
-<select id="species">
-
-<option value="all">All species</option>
-
-<option value="Giant Trevally">Giant Trevally</option>
-
-<option value="European Pike">European Pike</option>
-
-<option value="Yellowfin Tuna">Yellowfin Tuna</option>
-
-</select>
-
-<select id="time">
-
-<option value="all">All time</option>
-
-<option value="7">Last 7 days</option>
-
-<option value="30">Last 30 days</option>
-
-<option value="365">Last 12 months</option>
-
-</select>
-
-<select id="type">
-
-<option value="all">All catches</option>
-
-<option value="demo">Demo catches</option>
-
-<option value="verified">Verified catches</option>
-
-</select>
-
-</div>
+<button class="publish" onclick="showForm()">＋ Publish a catch</button>
 
 <div id="map"></div>
 
-<h2>Community catches</h2>
+<div id="form" class="card">
 
-<div id="feed"></div>
+<h2>🎣 Publish your catch</h2>
+
+<input id="photo" type="file" accept="image/*">
+
+<input id="species" placeholder="Fish species *">
+
+<input id="weight" type="number" placeholder="Weight (kg)">
+
+<input id="length" type="number" placeholder="Length (cm)">
+
+<select id="country">
+
+<option value="">Select country *</option>
+
+<option>Australia</option><option>France</option>
+
+<option>New Caledonia</option><option>United States</option>
+
+<option>Japan</option><option>Brazil</option>
+
+<option>Spain</option><option>Other</option>
+
+</select>
+
+<input id="area" placeholder="General area (optional)">
+
+<select id="water">
+
+<option>Saltwater</option><option>Freshwater</option><option>Brackish</option>
+
+</select>
+
+<input id="date" type="date">
+
+<input id="technique" placeholder="Fishing technique">
+
+<input id="bait" placeholder="Bait or lure">
+
+<textarea id="story" placeholder="Tell your fishing story"></textarea>
+
+<button class="publish" onclick="publishCatch()">🚀 Publish catch</button>
+
+<button onclick="hideForm()">Cancel</button>
+
+</div>
+
+<h2>🌊 Latest catches</h2>
+
+<div id="posts"></div>
 
 </main>
 
 <nav>
 
-<a href="#map">🌍 Map</a>
+<button onclick="window.scrollTo(0,0)">🌍 Map</button>
 
-<a href="#feed">🐟 Feed</a>
+<button onclick="document.getElementById('posts').scrollIntoView()">📰 Feed</button>
 
-<a href="#publish">➕ Publish</a>
-
-<a href="#profile">👤 Profile</a>
+<button onclick="showForm()">＋ Publish</button>
 
 </nav>
 
@@ -140,77 +128,195 @@ nav a{color:white;text-decoration:none;font-size:12px}
 
 <script>
 
-const catches=[
+let catches=[];
 
-{name:"Giant Trevally",country:"Australia",water:"saltwater",lat:-19.25,lng:146.82,date:"2026-11-05",type:"demo",weight:"18 kg"},
-
-{name:"European Pike",country:"France",water:"freshwater",lat:43.85,lng:4.35,date:"2026-10-25",type:"demo",weight:"8 kg"},
-
-{name:"Yellowfin Tuna",country:"Pacific Ocean",water:"saltwater",lat:-17.5,lng:177.5,date:"2026-09-20",type:"demo",weight:"32 kg"}
-
-];
+try{catches=JSON.parse(localStorage.getItem('fw-catches')||'[]')}catch(e){}
 
 const map=L.map('map').setView([15,10],2);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
 
-maxZoom:18,
-
-attribution:'&copy; OpenStreetMap contributors'
+attribution:'© OpenStreetMap'
 
 }).addTo(map);
 
-const markers=L.layerGroup().addTo(map);
+const locations={
 
-function update(){
+Australia:[-25,134],France:[46,2],
 
-markers.clearLayers();
+'New Caledonia':[-21,165],
 
-const water=document.getElementById('water').value;
+'United States':[39,-98],Japan:[36,138],
 
-const species=document.getElementById('species').value;
+Brazil:[-10,-52],Spain:[40,-4],Other:[0,0]
 
-const time=document.getElementById('time').value;
+};
 
-const type=document.getElementById('type').value;
+function showForm(){
 
-const filtered=catches.filter(c=>{
+document.getElementById('form').style.display='block';
 
-const age=(Date.now()-new Date(c.date).getTime())/86400000;
+document.getElementById('form').scrollIntoView({behavior:'smooth'});
 
-return (water==='all'||c.water===water)
+}
 
-&&(species==='all'||c.name===species)
+function hideForm(){
 
-&&(time==='all'||age<=Number(time))
+document.getElementById('form').style.display='none';
 
-&&(type==='all'||c.type===type);
+}
 
-});
+function safe(s){
 
-document.getElementById('feed').innerHTML=filtered.map(c=>
+return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-`<div class="catch"><small>DEMO CATCH · ${c.country.toUpperCase()}</small><h3>🐟 ${c.name}</h3><p>${c.weight} · ${c.country}</p></div>`
+}
 
-).join('')||'<p>No catches found with these filters.</p>';
+function display(){
 
-filtered.forEach(c=>{
+document.getElementById('posts').innerHTML=catches.map(c=>
 
-L.marker([c.lat,c.lng]).addTo(markers)
+`<div class="card"><h3>🐟 ${safe(c.species)}</h3>
 
-.bindPopup(`<b>${c.name}</b><br>${c.country}<br>${c.weight}<br>Demo catch`);
+<p>${safe(c.country)} · ${safe(c.date)}</p>
+
+${c.photo?`<img src="${c.photo}">`:''}
+
+<p>⚖️ ${safe(c.weight||'—')} kg · 📏 ${safe(c.length||'—')} cm</p>
+
+<p>${safe(c.technique)} · ${safe(c.bait)}</p>
+
+<p>${safe(c.story)}</p></div>`
+
+).join('')||'<p>No catches yet. Be the first!</p>';
+
+}
+
+function addMarkers(){
+
+catches.forEach(c=>{
+
+if(c.lat!==undefined){
+
+L.marker([c.lat,c.lon]).addTo(map)
+
+.bindPopup(safe(c.species)+' · '+safe(c.country));
+
+}
 
 });
 
 }
 
-['water','species','time','type'].forEach(id=>{
+function publishCatch(){
 
-document.getElementById(id).addEventListener('change',update);
+const species=document.getElementById('species').value.trim();
 
-});
+const country=document.getElementById('country').value;
 
-update();
+const date=document.getElementById('date').value;
+
+if(!species||!country||!date){
+
+alert('Please enter species, country and date.');
+
+return;
+
+}
+
+const file=document.getElementById('photo').files[0];
+
+const save=(photo)=>{
+
+const coords=locations[country]||[0,0];
+
+const c={
+
+species,country,date,photo,
+
+weight:document.getElementById('weight').value,
+
+length:document.getElementById('length').value,
+
+area:document.getElementById('area').value,
+
+technique:document.getElementById('technique').value,
+
+bait:document.getElementById('bait').value,
+
+story:document.getElementById('story').value,
+
+lat:coords[0]+(Math.random()-.5),
+
+lon:coords[1]+(Math.random()-.5)
+
+};
+
+catches.unshift(c);
+
+try{
+
+localStorage.setItem('fw-catches',JSON.stringify(catches));
+
+}catch(e){
+
+catches.shift();
+
+alert('Storage full. Try a smaller photo.');
+
+return;
+
+}
+
+display();
+
+addMarkers();
+
+hideForm();
+
+alert('Catch published on this device! 🐟');
+
+};
+
+if(file){
+
+const reader=new FileReader();
+
+reader.onload=()=>{
+
+const img=new Image();
+
+img.onload=()=>{
+
+const canvas=document.createElement('canvas');
+
+const scale=Math.min(1,900/Math.max(img.width,img.height));
+
+canvas.width=img.width*scale;
+
+canvas.height=img.height*scale;
+
+canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+
+save(canvas.toDataURL('image/jpeg',.7));
+
+};
+
+img.src=reader.result;
+
+};
+
+reader.readAsDataURL(file);
+
+}else{save('');}
+
+}
+
+display();
+
+addMarkers();
+
+document.getElementById('date').value=new Date().toISOString().slice(0,10);
 
 </script>
 
