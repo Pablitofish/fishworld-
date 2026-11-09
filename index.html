@@ -6,6 +6,8 @@
 
 
 
+
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -278,7 +280,7 @@ Spain:[40,-4],"South Africa":[-29,24],Indonesia:[-2,118],Other:[0,0]
 
 function getLocation(area,country){
 
-const key=area.trim().toLowerCase();
+const key=(area||"").trim().toLowerCase();
 
 if(locations[key])return locations[key];
 
@@ -291,6 +293,34 @@ if(key.includes(name))return locations[name];
 return countryCenters[country]||[0,0];
 
 }
+
+/* Correct the old Queenfish location */
+
+catches=catches.map(c=>{
+
+if((c.species||"").toLowerCase().includes("queenfish") &&
+
+(c.country||"")==="Australia"){
+
+const p=getLocation("Townsville","Australia");
+
+return {...c,area:c.area||"Townsville",lat:p[0]+0.02,lon:p[1]+0.02};
+
+}
+
+if((typeof c.lat!=="number"||typeof c.lon!=="number")&&c.area){
+
+const p=getLocation(c.area,c.country);
+
+return {...c,lat:p[0],lon:p[1]};
+
+}
+
+return c;
+
+});
+
+try{localStorage.setItem("fw-catches",JSON.stringify(catches))}catch(e){}
 
 const map=L.map("map").setView([15,10],2);
 
@@ -390,7 +420,13 @@ document.getElementById("form").scrollIntoView({behavior:"smooth"});
 
 function hideForm(){document.getElementById("form").style.display="none"}
 
-function goMap(){document.getElementById("map").scrollIntoView({behavior:"smooth"});setTimeout(()=>map.invalidateSize(),300)}
+function goMap(){
+
+document.getElementById("map").scrollIntoView({behavior:"smooth"});
+
+setTimeout(()=>map.invalidateSize(),300);
+
+}
 
 function goFeed(){document.getElementById("posts").scrollIntoView({behavior:"smooth"})}
 
@@ -444,15 +480,23 @@ lon:coords[1]+(Math.random()-.5)*.15
 
 const updated=[c,...catches];
 
-try{localStorage.setItem("fw-catches",JSON.stringify(updated));catches=updated}
+try{
 
-catch(e){alert("Storage full. Try a smaller photo.");return}
+localStorage.setItem("fw-catches",JSON.stringify(updated));
+
+catches=updated;
+
+}catch(e){alert("Storage full. Try a smaller photo.");return}
 
 render();
 
 hideForm();
 
-document.getElementById("form").querySelectorAll("input,textarea").forEach(x=>{if(x.type!=="date"&&x.type!=="file")x.value=""});
+document.getElementById("form").querySelectorAll("input,textarea").forEach(x=>{
+
+if(x.type!=="date"&&x.type!=="file")x.value="";
+
+});
 
 document.getElementById("photo").value="";
 
