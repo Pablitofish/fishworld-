@@ -1,5 +1,7 @@
 
 
+
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -8,137 +10,47 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>FishWorld</title>
 
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
 <style>
 
-body {
+*{box-sizing:border-box}
 
-  margin: 0;
+body{margin:0;background:#071b26;color:white;font-family:Arial,sans-serif}
 
-  background: #071b26;
+header{padding:19px;background:#103341;font-size:25px;font-weight:bold}
 
-  color: white;
+header span{color:#35d6b0}
 
-  font-family: Arial, sans-serif;
+main{padding:16px}
 
-}
+h1{font-size:25px;margin-bottom:7px}
 
-header {
+p{color:#b5cbd3}
 
-  padding: 22px;
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:20px 0}
 
-  background: #103341;
+select{width:100%;padding:12px 5px;border-radius:10px;background:#174251;color:white;border:1px solid #416b78;font-size:13px}
 
-  font-size: 26px;
+#map{height:430px;border-radius:16px;overflow:hidden;border:1px solid #416b78}
 
-  font-weight: bold;
+h2{margin-top:25px}
 
-}
+.catch{background:#123542;padding:15px;border-radius:12px;margin:10px 0}
 
-header span { color: #35d6b0; }
+small{color:#35d6b0}
 
-h1 { font-size: 27px; }
+nav{position:sticky;bottom:0;background:#103341;display:flex;justify-content:space-around;padding:17px 3px}
 
-main { padding: 18px; }
+nav a{color:white;text-decoration:none;font-size:12px}
 
-p { color: #b5cbd3; }
+.leaflet-popup-content-wrapper{border-radius:12px}
 
-.filters {
-
-  display: grid;
-
-  grid-template-columns: 1fr 1fr;
-
-  gap: 10px;
-
-  margin: 20px 0;
-
-}
-
-select {
-
-  background: #174251;
-
-  color: white;
-
-  border: 1px solid #416b78;
-
-  padding: 13px 8px;
-
-  border-radius: 12px;
-
-  width: 100%;
-
-}
-
-.map {
-
-  background: linear-gradient(140deg,#176073,#092b3c);
-
-  min-height: 270px;
-
-  border-radius: 18px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  text-align: center;
-
-  padding: 15px;
-
-}
-
-.globe { font-size: 65px; }
-
-.catch {
-
-  background: #123542;
-
-  padding: 16px;
-
-  margin-top: 12px;
-
-  border-radius: 14px;
-
-}
-
-small { color: #35d6b0; }
-
-nav {
-
-  position: fixed;
-
-  bottom: 0;
-
-  left: 0;
-
-  right: 0;
-
-  background: #103341;
-
-  display: flex;
-
-  justify-content: space-around;
-
-  padding: 17px 4px;
-
-}
-
-nav a {
-
-  color: white;
-
-  text-decoration: none;
-
-  font-size: 12px;
-
-}
+.leaflet-popup-content{color:#102b35;font-weight:bold}
 
 </style>
 
@@ -156,65 +68,151 @@ nav a {
 
 <div class="filters">
 
-<select><option>All waters</option><option>Saltwater</option><option>Freshwater</option></select>
+<select id="water">
 
-<select><option>All species</option><option>Tuna</option><option>Sharks</option><option>Trout</option></select>
+<option value="all">All waters</option>
 
-<select><option>All time</option><option>Last 7 days</option><option>Last 30 days</option></select>
+<option value="saltwater">Saltwater</option>
 
-<select><option>All catches</option><option>Verified</option><option>Demo</option></select>
+<option value="freshwater">Freshwater</option>
+
+<option value="brackish">Brackish</option>
+
+</select>
+
+<select id="species">
+
+<option value="all">All species</option>
+
+<option value="Giant Trevally">Giant Trevally</option>
+
+<option value="European Pike">European Pike</option>
+
+<option value="Yellowfin Tuna">Yellowfin Tuna</option>
+
+</select>
+
+<select id="time">
+
+<option value="all">All time</option>
+
+<option value="7">Last 7 days</option>
+
+<option value="30">Last 30 days</option>
+
+<option value="365">Last 12 months</option>
+
+</select>
+
+<select id="type">
+
+<option value="all">All catches</option>
+
+<option value="demo">Demo catches</option>
+
+<option value="verified">Verified catches</option>
+
+</select>
 
 </div>
 
-<div class="map">
-
-<div>
-
-<div class="globe">🌍 🎣</div>
-
-<h2>Global fishing map</h2>
-
-<p>Explore catches from around the world</p>
-
-</div>
-
-</div>
+<div id="map"></div>
 
 <h2>Community catches</h2>
 
-<div class="catch">
-
-<small>DEMO CATCH · AUSTRALIA</small>
-
-<h3>🐟 Giant Trevally</h3>
-
-<p>A powerful tropical fish.</p>
-
-</div>
-
-<div class="catch">
-
-<small>DEMO CATCH · FRANCE</small>
-
-<h3>🐟 European Pike</h3>
-
-<p>A freshwater predator.</p>
-
-</div>
+<div id="feed"></div>
 
 </main>
 
 <nav>
 
-<a href="#">🌍 Map</a>
+<a href="#map">🌍 Map</a>
 
-<a href="#community">🐟 Feed</a>
+<a href="#feed">🐟 Feed</a>
 
 <a href="#publish">➕ Publish</a>
 
 <a href="#profile">👤 Profile</a>
 
 </nav>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+const catches=[
+
+{name:"Giant Trevally",country:"Australia",water:"saltwater",lat:-19.25,lng:146.82,date:"2026-11-05",type:"demo",weight:"18 kg"},
+
+{name:"European Pike",country:"France",water:"freshwater",lat:43.85,lng:4.35,date:"2026-10-25",type:"demo",weight:"8 kg"},
+
+{name:"Yellowfin Tuna",country:"Pacific Ocean",water:"saltwater",lat:-17.5,lng:177.5,date:"2026-09-20",type:"demo",weight:"32 kg"}
+
+];
+
+const map=L.map('map').setView([15,10],2);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+
+maxZoom:18,
+
+attribution:'&copy; OpenStreetMap contributors'
+
+}).addTo(map);
+
+const markers=L.layerGroup().addTo(map);
+
+function update(){
+
+markers.clearLayers();
+
+const water=document.getElementById('water').value;
+
+const species=document.getElementById('species').value;
+
+const time=document.getElementById('time').value;
+
+const type=document.getElementById('type').value;
+
+const filtered=catches.filter(c=>{
+
+const age=(Date.now()-new Date(c.date).getTime())/86400000;
+
+return (water==='all'||c.water===water)
+
+&&(species==='all'||c.name===species)
+
+&&(time==='all'||age<=Number(time))
+
+&&(type==='all'||c.type===type);
+
+});
+
+document.getElementById('feed').innerHTML=filtered.map(c=>
+
+`<div class="catch"><small>DEMO CATCH · ${c.country.toUpperCase()}</small><h3>🐟 ${c.name}</h3><p>${c.weight} · ${c.country}</p></div>`
+
+).join('')||'<p>No catches found with these filters.</p>';
+
+filtered.forEach(c=>{
+
+L.marker([c.lat,c.lng]).addTo(markers)
+
+.bindPopup(`<b>${c.name}</b><br>${c.country}<br>${c.weight}<br>Demo catch`);
+
+});
+
+}
+
+['water','species','time','type'].forEach(id=>{
+
+document.getElementById(id).addEventListener('change',update);
+
+});
+
+update();
+
+</script>
 
 </body>
 
