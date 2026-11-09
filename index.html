@@ -1,0 +1,221 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FishWorld</title>
+
+<style>
+
+body {
+
+  margin: 0;
+
+  background: #071b26;
+
+  color: white;
+
+  font-family: Arial, sans-serif;
+
+}
+
+header {
+
+  padding: 22px;
+
+  background: #103341;
+
+  font-size: 26px;
+
+  font-weight: bold;
+
+}
+
+header span { color: #35d6b0; }
+
+h1 { font-size: 27px; }
+
+main { padding: 18px; }
+
+p { color: #b5cbd3; }
+
+.filters {
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 10px;
+
+  margin: 20px 0;
+
+}
+
+select {
+
+  background: #174251;
+
+  color: white;
+
+  border: 1px solid #416b78;
+
+  padding: 13px 8px;
+
+  border-radius: 12px;
+
+  width: 100%;
+
+}
+
+.map {
+
+  background: linear-gradient(140deg,#176073,#092b3c);
+
+  min-height: 270px;
+
+  border-radius: 18px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 15px;
+
+}
+
+.globe { font-size: 65px; }
+
+.catch {
+
+  background: #123542;
+
+  padding: 16px;
+
+  margin-top: 12px;
+
+  border-radius: 14px;
+
+}
+
+small { color: #35d6b0; }
+
+nav {
+
+  position: fixed;
+
+  bottom: 0;
+
+  left: 0;
+
+  right: 0;
+
+  background: #103341;
+
+  display: flex;
+
+  justify-content: space-around;
+
+  padding: 17px 4px;
+
+}
+
+nav a {
+
+  color: white;
+
+  text-decoration: none;
+
+  font-size: 12px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>🐟 Fish<span>World</span></header>
+
+<main>
+
+<h1>Discover catches worldwide</h1>
+
+<p>One world. One community. A passion for fishing.</p>
+
+<div class="filters">
+
+<select><option>All waters</option><option>Saltwater</option><option>Freshwater</option></select>
+
+<select><option>All species</option><option>Tuna</option><option>Sharks</option><option>Trout</option></select>
+
+<select><option>All time</option><option>Last 7 days</option><option>Last 30 days</option></select>
+
+<select><option>All catches</option><option>Verified</option><option>Demo</option></select>
+
+</div>
+
+<div class="map">
+
+<div>
+
+<div class="globe">🌍 🎣</div>
+
+<h2>Global fishing map</h2>
+
+<p>Explore catches from around the world</p>
+
+</div>
+
+</div>
+
+<h2>Community catches</h2>
+
+<div class="catch">
+
+<small>DEMO CATCH · AUSTRALIA</small>
+
+<h3>🐟 Giant Trevally</h3>
+
+<p>A powerful tropical fish.</p>
+
+</div>
+
+<div class="catch">
+
+<small>DEMO CATCH · FRANCE</small>
+
+<h3>🐟 European Pike</h3>
+
+<p>A freshwater predator.</p>
+
+</div>
+
+</main>
+
+<nav>
+
+<a href="#">🌍 Map</a>
+
+<a href="#community">🐟 Feed</a>
+
+<a href="#publish">➕ Publish</a>
+
+<a href="#profile">👤 Profile</a>
+
+</nav>
+
+</body>
+
+</html>
